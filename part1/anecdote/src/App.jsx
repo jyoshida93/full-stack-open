@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 
 const App = () => {
   const anecdotes = [
@@ -13,17 +13,49 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
   const rand = () => {
     const random = Math.floor(Math.random()*anecdotes.length);
     setSelected(random)
   }
 
+  const vote = () => {
+    console.log("votting")
+    setVotes((prev) => {
+      const updatedVotes = [...prev];
+      updatedVotes[selected] = prev[selected] + 1;
+      return updatedVotes;
+    })
+  }
+
+  const mostLikedPost = useMemo(() => {
+    return votes.reduce((maxIndex, currentValue, currentIndex, array) => 
+      currentValue > array[maxIndex] ? currentIndex : maxIndex, 0);
+  }, [votes]);
+
+  console.log("most liked " + mostLikedPost);
+
+  const getMostLiked = ()=>{
+    return votes[mostLikedPost] === 0 ? "Booo" : anecdotes[mostLikedPost];
+  }
+
+
+
   return (
     <>
+    <h2>
+      Anecdote of the day
+    </h2>
     <div>
       {anecdotes[selected]}
     </div>
+    <div>
+      {" votes " + votes[selected]}
+    </div>
     <button onClick={rand} >Next</button>
+    <button onClick={vote}>Vote</button>
+    <h2>Ancedote with most votes</h2>
+    <div>{getMostLiked()}</div>
     </>
   )
 }
