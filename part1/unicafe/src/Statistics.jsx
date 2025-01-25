@@ -6,18 +6,23 @@ const Statistics = ({ goodCount, neutralCount, badCount }) => {
   }
   return (
     <>
-      <StatisticLine name="good" value={goodCount} />
+    <table>
+      <tbody>
+
+    <StatisticLine name="good" value={goodCount} />
       <StatisticLine name="neutral" value={neutralCount} />
       <StatisticLine name="bad" value={badCount} />
       <StatisticLine name="all" value={totalCount} />
       <StatisticLine
         name="average"
         value={(goodCount - badCount) / totalCount}
-      />
+        />
       <StatisticLine
         name="positive"
         value={(goodCount * 100) / totalCount + "%"}
-      />
+        />
+        </tbody>
+    </table>
     </>
   );
 };
